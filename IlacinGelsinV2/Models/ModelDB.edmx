@@ -1,0 +1,273 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="IlacinGeslsinModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Ilac">
+          <Key>
+            <PropertyRef Name="ilacId" />
+          </Key>
+          <Property Name="ilacId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ilacAdi" Type="nvarchar" MaxLength="50" />
+          <Property Name="ilacAciklama" Type="nvarchar(max)" />
+          <Property Name="ilacFiyat" Type="int" />
+          <Property Name="ilacFoto" Type="nvarchar(max)" />
+          <Property Name="ilacKatId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Kategori">
+          <Key>
+            <PropertyRef Name="katId" />
+          </Key>
+          <Property Name="katId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="katAdi" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Sepet">
+          <Key>
+            <PropertyRef Name="sepetId" />
+          </Key>
+          <Property Name="sepetId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="uyeId" Type="int" Nullable="false" />
+          <Property Name="ilacId" Type="int" Nullable="false" />
+          <Property Name="sepetAdet" Type="int" />
+        </EntityType>
+        <EntityType Name="Uye">
+          <Key>
+            <PropertyRef Name="uyeId" />
+          </Key>
+          <Property Name="uyeId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="uyeAdsoyad" Type="nvarchar" MaxLength="50" />
+          <Property Name="uyeKullaniciAdi" Type="nvarchar" MaxLength="50" />
+          <Property Name="uyeEposta" Type="nvarchar" MaxLength="75" />
+          <Property Name="uyeSifre" Type="nvarchar" MaxLength="50" />
+          <Property Name="uyeAdmin" Type="int" />
+        </EntityType>
+        <Association Name="FK_Ilac_Kategori">
+          <End Role="Kategori" Type="Self.Kategori" Multiplicity="1" />
+          <End Role="Ilac" Type="Self.Ilac" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Kategori">
+              <PropertyRef Name="katId" />
+            </Principal>
+            <Dependent Role="Ilac">
+              <PropertyRef Name="ilacKatId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Sepet_Ilac">
+          <End Role="Ilac" Type="Self.Ilac" Multiplicity="1" />
+          <End Role="Sepet" Type="Self.Sepet" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Ilac">
+              <PropertyRef Name="ilacId" />
+            </Principal>
+            <Dependent Role="Sepet">
+              <PropertyRef Name="ilacId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Sepet_Uye">
+          <End Role="Uye" Type="Self.Uye" Multiplicity="1" />
+          <End Role="Sepet" Type="Self.Sepet" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Uye">
+              <PropertyRef Name="uyeId" />
+            </Principal>
+            <Dependent Role="Sepet">
+              <PropertyRef Name="uyeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="IlacinGeslsinModelStoreContainer">
+          <EntitySet Name="Ilac" EntityType="Self.Ilac" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Kategori" EntityType="Self.Kategori" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Sepet" EntityType="Self.Sepet" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Uye" EntityType="Self.Uye" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Ilac_Kategori" Association="Self.FK_Ilac_Kategori">
+            <End Role="Kategori" EntitySet="Kategori" />
+            <End Role="Ilac" EntitySet="Ilac" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Sepet_Ilac" Association="Self.FK_Sepet_Ilac">
+            <End Role="Ilac" EntitySet="Ilac" />
+            <End Role="Sepet" EntitySet="Sepet" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Sepet_Uye" Association="Self.FK_Sepet_Uye">
+            <End Role="Uye" EntitySet="Uye" />
+            <End Role="Sepet" EntitySet="Sepet" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="IlacinGeslsinModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Ilac">
+          <Key>
+            <PropertyRef Name="ilacId" />
+          </Key>
+          <Property Name="ilacId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ilacAdi" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ilacAciklama" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ilacFiyat" Type="Int32" />
+          <Property Name="ilacFoto" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ilacKatId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Kategori" Relationship="Self.FK_Ilac_Kategori" FromRole="Ilac" ToRole="Kategori" />
+          <NavigationProperty Name="Sepet" Relationship="Self.FK_Sepet_Ilac" FromRole="Ilac" ToRole="Sepet" />
+        </EntityType>
+        <EntityType Name="Kategori">
+          <Key>
+            <PropertyRef Name="katId" />
+          </Key>
+          <Property Name="katId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="katAdi" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Ilac" Relationship="Self.FK_Ilac_Kategori" FromRole="Kategori" ToRole="Ilac" />
+        </EntityType>
+        <EntityType Name="Sepet">
+          <Key>
+            <PropertyRef Name="sepetId" />
+          </Key>
+          <Property Name="sepetId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="uyeId" Type="Int32" Nullable="false" />
+          <Property Name="ilacId" Type="Int32" Nullable="false" />
+          <Property Name="sepetAdet" Type="Int32" />
+          <NavigationProperty Name="Ilac" Relationship="Self.FK_Sepet_Ilac" FromRole="Sepet" ToRole="Ilac" />
+          <NavigationProperty Name="Uye" Relationship="IlacinGeslsinModel.FK_Sepet_Uye" FromRole="Sepet" ToRole="Uye" />
+        </EntityType>
+        <Association Name="FK_Ilac_Kategori">
+          <End Role="Kategori" Type="Self.Kategori" Multiplicity="1" />
+          <End Role="Ilac" Type="Self.Ilac" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Kategori">
+              <PropertyRef Name="katId" />
+            </Principal>
+            <Dependent Role="Ilac">
+              <PropertyRef Name="ilacKatId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Sepet_Ilac">
+          <End Role="Ilac" Type="Self.Ilac" Multiplicity="1" />
+          <End Role="Sepet" Type="Self.Sepet" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Ilac">
+              <PropertyRef Name="ilacId" />
+            </Principal>
+            <Dependent Role="Sepet">
+              <PropertyRef Name="ilacId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="IlacinGeslsinEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Ilac" EntityType="Self.Ilac" />
+          <EntitySet Name="Kategori" EntityType="Self.Kategori" />
+          <EntitySet Name="Sepet" EntityType="Self.Sepet" />
+          <AssociationSet Name="FK_Ilac_Kategori" Association="Self.FK_Ilac_Kategori">
+            <End Role="Kategori" EntitySet="Kategori" />
+            <End Role="Ilac" EntitySet="Ilac" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Sepet_Ilac" Association="Self.FK_Sepet_Ilac">
+            <End Role="Ilac" EntitySet="Ilac" />
+            <End Role="Sepet" EntitySet="Sepet" />
+          </AssociationSet>
+          <EntitySet Name="Uye" EntityType="IlacinGeslsinModel.Uye" />
+          <AssociationSet Name="FK_Sepet_Uye" Association="IlacinGeslsinModel.FK_Sepet_Uye">
+            <End Role="Uye" EntitySet="Uye" />
+            <End Role="Sepet" EntitySet="Sepet" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Uye">
+          <Key>
+            <PropertyRef Name="uyeId" />
+          </Key>
+          <Property Name="uyeId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="uyeAdsoyad" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="uyeKullaniciAdi" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="uyeEposta" Type="String" MaxLength="75" FixedLength="false" Unicode="true" />
+          <Property Name="uyeSifre" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="uyeAdmin" Type="Int32" />
+          <NavigationProperty Name="Sepet" Relationship="IlacinGeslsinModel.FK_Sepet_Uye" FromRole="Uye" ToRole="Sepet" />
+        </EntityType>
+        <Association Name="FK_Sepet_Uye">
+          <End Type="IlacinGeslsinModel.Uye" Role="Uye" Multiplicity="1" />
+          <End Type="IlacinGeslsinModel.Sepet" Role="Sepet" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Uye">
+              <PropertyRef Name="uyeId" />
+            </Principal>
+            <Dependent Role="Sepet">
+              <PropertyRef Name="uyeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="IlacinGeslsinModelStoreContainer" CdmEntityContainer="IlacinGeslsinEntities">
+          <EntitySetMapping Name="Ilac">
+            <EntityTypeMapping TypeName="IlacinGeslsinModel.Ilac">
+              <MappingFragment StoreEntitySet="Ilac">
+                <ScalarProperty Name="ilacId" ColumnName="ilacId" />
+                <ScalarProperty Name="ilacAdi" ColumnName="ilacAdi" />
+                <ScalarProperty Name="ilacAciklama" ColumnName="ilacAciklama" />
+                <ScalarProperty Name="ilacFiyat" ColumnName="ilacFiyat" />
+                <ScalarProperty Name="ilacFoto" ColumnName="ilacFoto" />
+                <ScalarProperty Name="ilacKatId" ColumnName="ilacKatId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Kategori">
+            <EntityTypeMapping TypeName="IlacinGeslsinModel.Kategori">
+              <MappingFragment StoreEntitySet="Kategori">
+                <ScalarProperty Name="katId" ColumnName="katId" />
+                <ScalarProperty Name="katAdi" ColumnName="katAdi" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Sepet">
+            <EntityTypeMapping TypeName="IlacinGeslsinModel.Sepet">
+              <MappingFragment StoreEntitySet="Sepet">
+                <ScalarProperty Name="sepetId" ColumnName="sepetId" />
+                <ScalarProperty Name="uyeId" ColumnName="uyeId" />
+                <ScalarProperty Name="ilacId" ColumnName="ilacId" />
+                <ScalarProperty Name="sepetAdet" ColumnName="sepetAdet" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Uye">
+            <EntityTypeMapping TypeName="IlacinGeslsinModel.Uye">
+              <MappingFragment StoreEntitySet="Uye">
+                <ScalarProperty Name="uyeAdmin" ColumnName="uyeAdmin" />
+                <ScalarProperty Name="uyeSifre" ColumnName="uyeSifre" />
+                <ScalarProperty Name="uyeEposta" ColumnName="uyeEposta" />
+                <ScalarProperty Name="uyeKullaniciAdi" ColumnName="uyeKullaniciAdi" />
+                <ScalarProperty Name="uyeAdsoyad" ColumnName="uyeAdsoyad" />
+                <ScalarProperty Name="uyeId" ColumnName="uyeId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
