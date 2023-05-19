@@ -5,6 +5,14 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="IlacinGeslsinModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Begen">
+          <Key>
+            <PropertyRef Name="begenId" />
+          </Key>
+          <Property Name="begenId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="uyeId" Type="int" Nullable="false" />
+          <Property Name="ilacId" Type="int" Nullable="false" />
+        </EntityType>
         <EntityType Name="Ilac">
           <Key>
             <PropertyRef Name="ilacId" />
@@ -43,6 +51,40 @@
           <Property Name="uyeSifre" Type="nvarchar" MaxLength="50" />
           <Property Name="uyeAdmin" Type="int" />
         </EntityType>
+        <EntityType Name="Yorum">
+          <Key>
+            <PropertyRef Name="yorumId" />
+          </Key>
+          <Property Name="yorumId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="yorumIcerik" Type="nvarchar(max)" />
+          <Property Name="uyeId" Type="int" Nullable="false" />
+          <Property Name="ilacId" Type="int" Nullable="false" />
+          <Property Name="Tarih" Type="datetime" />
+        </EntityType>
+        <Association Name="FK_Begen_Ilac">
+          <End Role="Ilac" Type="Self.Ilac" Multiplicity="1" />
+          <End Role="Begen" Type="Self.Begen" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Ilac">
+              <PropertyRef Name="ilacId" />
+            </Principal>
+            <Dependent Role="Begen">
+              <PropertyRef Name="ilacId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Begen_Uye">
+          <End Role="Uye" Type="Self.Uye" Multiplicity="1" />
+          <End Role="Begen" Type="Self.Begen" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Uye">
+              <PropertyRef Name="uyeId" />
+            </Principal>
+            <Dependent Role="Begen">
+              <PropertyRef Name="uyeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Ilac_Kategori">
           <End Role="Kategori" Type="Self.Kategori" Multiplicity="1" />
           <End Role="Ilac" Type="Self.Ilac" Multiplicity="*" />
@@ -79,11 +121,45 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Yorum_Ilac">
+          <End Role="Ilac" Type="Self.Ilac" Multiplicity="1" />
+          <End Role="Yorum" Type="Self.Yorum" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Ilac">
+              <PropertyRef Name="ilacId" />
+            </Principal>
+            <Dependent Role="Yorum">
+              <PropertyRef Name="ilacId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Yorum_Uye">
+          <End Role="Uye" Type="Self.Uye" Multiplicity="1" />
+          <End Role="Yorum" Type="Self.Yorum" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Uye">
+              <PropertyRef Name="uyeId" />
+            </Principal>
+            <Dependent Role="Yorum">
+              <PropertyRef Name="uyeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="IlacinGeslsinModelStoreContainer">
+          <EntitySet Name="Begen" EntityType="Self.Begen" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Ilac" EntityType="Self.Ilac" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Kategori" EntityType="Self.Kategori" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Sepet" EntityType="Self.Sepet" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Uye" EntityType="Self.Uye" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Yorum" EntityType="Self.Yorum" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Begen_Ilac" Association="Self.FK_Begen_Ilac">
+            <End Role="Ilac" EntitySet="Ilac" />
+            <End Role="Begen" EntitySet="Begen" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Begen_Uye" Association="Self.FK_Begen_Uye">
+            <End Role="Uye" EntitySet="Uye" />
+            <End Role="Begen" EntitySet="Begen" />
+          </AssociationSet>
           <AssociationSet Name="FK_Ilac_Kategori" Association="Self.FK_Ilac_Kategori">
             <End Role="Kategori" EntitySet="Kategori" />
             <End Role="Ilac" EntitySet="Ilac" />
@@ -96,11 +172,65 @@
             <End Role="Uye" EntitySet="Uye" />
             <End Role="Sepet" EntitySet="Sepet" />
           </AssociationSet>
+          <AssociationSet Name="FK_Yorum_Ilac" Association="Self.FK_Yorum_Ilac">
+            <End Role="Ilac" EntitySet="Ilac" />
+            <End Role="Yorum" EntitySet="Yorum" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Yorum_Uye" Association="Self.FK_Yorum_Uye">
+            <End Role="Uye" EntitySet="Uye" />
+            <End Role="Yorum" EntitySet="Yorum" />
+          </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="IlacinGeslsinModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="IlacinGeslsinEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Begen" EntityType="IlacinGeslsinModel.Begen" />
+          <EntitySet Name="Ilac" EntityType="IlacinGeslsinModel.Ilac" />
+          <EntitySet Name="Kategori" EntityType="IlacinGeslsinModel.Kategori" />
+          <EntitySet Name="Sepet" EntityType="IlacinGeslsinModel.Sepet" />
+          <EntitySet Name="Uye" EntityType="IlacinGeslsinModel.Uye" />
+          <EntitySet Name="Yorum" EntityType="IlacinGeslsinModel.Yorum" />
+          <AssociationSet Name="FK_Begen_Ilac" Association="IlacinGeslsinModel.FK_Begen_Ilac">
+            <End Role="Ilac" EntitySet="Ilac" />
+            <End Role="Begen" EntitySet="Begen" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Begen_Uye" Association="IlacinGeslsinModel.FK_Begen_Uye">
+            <End Role="Uye" EntitySet="Uye" />
+            <End Role="Begen" EntitySet="Begen" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Ilac_Kategori" Association="IlacinGeslsinModel.FK_Ilac_Kategori">
+            <End Role="Kategori" EntitySet="Kategori" />
+            <End Role="Ilac" EntitySet="Ilac" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Sepet_Ilac" Association="IlacinGeslsinModel.FK_Sepet_Ilac">
+            <End Role="Ilac" EntitySet="Ilac" />
+            <End Role="Sepet" EntitySet="Sepet" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Yorum_Ilac" Association="IlacinGeslsinModel.FK_Yorum_Ilac">
+            <End Role="Ilac" EntitySet="Ilac" />
+            <End Role="Yorum" EntitySet="Yorum" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Sepet_Uye" Association="IlacinGeslsinModel.FK_Sepet_Uye">
+            <End Role="Uye" EntitySet="Uye" />
+            <End Role="Sepet" EntitySet="Sepet" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Yorum_Uye" Association="IlacinGeslsinModel.FK_Yorum_Uye">
+            <End Role="Uye" EntitySet="Uye" />
+            <End Role="Yorum" EntitySet="Yorum" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Begen">
+          <Key>
+            <PropertyRef Name="begenId" />
+          </Key>
+          <Property Name="begenId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="uyeId" Type="Int32" Nullable="false" />
+          <Property Name="ilacId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Ilac" Relationship="IlacinGeslsinModel.FK_Begen_Ilac" FromRole="Begen" ToRole="Ilac" />
+          <NavigationProperty Name="Uye" Relationship="IlacinGeslsinModel.FK_Begen_Uye" FromRole="Begen" ToRole="Uye" />
+        </EntityType>
         <EntityType Name="Ilac">
           <Key>
             <PropertyRef Name="ilacId" />
@@ -111,8 +241,10 @@
           <Property Name="ilacFiyat" Type="Int32" />
           <Property Name="ilacFoto" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="ilacKatId" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Kategori" Relationship="Self.FK_Ilac_Kategori" FromRole="Ilac" ToRole="Kategori" />
-          <NavigationProperty Name="Sepet" Relationship="Self.FK_Sepet_Ilac" FromRole="Ilac" ToRole="Sepet" />
+          <NavigationProperty Name="Begen" Relationship="IlacinGeslsinModel.FK_Begen_Ilac" FromRole="Ilac" ToRole="Begen" />
+          <NavigationProperty Name="Kategori" Relationship="IlacinGeslsinModel.FK_Ilac_Kategori" FromRole="Ilac" ToRole="Kategori" />
+          <NavigationProperty Name="Sepet" Relationship="IlacinGeslsinModel.FK_Sepet_Ilac" FromRole="Ilac" ToRole="Sepet" />
+          <NavigationProperty Name="Yorum" Relationship="IlacinGeslsinModel.FK_Yorum_Ilac" FromRole="Ilac" ToRole="Yorum" />
         </EntityType>
         <EntityType Name="Kategori">
           <Key>
@@ -120,7 +252,7 @@
           </Key>
           <Property Name="katId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="katAdi" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Ilac" Relationship="Self.FK_Ilac_Kategori" FromRole="Kategori" ToRole="Ilac" />
+          <NavigationProperty Name="Ilac" Relationship="IlacinGeslsinModel.FK_Ilac_Kategori" FromRole="Kategori" ToRole="Ilac" />
         </EntityType>
         <EntityType Name="Sepet">
           <Key>
@@ -130,51 +262,9 @@
           <Property Name="uyeId" Type="Int32" Nullable="false" />
           <Property Name="ilacId" Type="Int32" Nullable="false" />
           <Property Name="sepetAdet" Type="Int32" />
-          <NavigationProperty Name="Ilac" Relationship="Self.FK_Sepet_Ilac" FromRole="Sepet" ToRole="Ilac" />
+          <NavigationProperty Name="Ilac" Relationship="IlacinGeslsinModel.FK_Sepet_Ilac" FromRole="Sepet" ToRole="Ilac" />
           <NavigationProperty Name="Uye" Relationship="IlacinGeslsinModel.FK_Sepet_Uye" FromRole="Sepet" ToRole="Uye" />
         </EntityType>
-        <Association Name="FK_Ilac_Kategori">
-          <End Role="Kategori" Type="Self.Kategori" Multiplicity="1" />
-          <End Role="Ilac" Type="Self.Ilac" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Kategori">
-              <PropertyRef Name="katId" />
-            </Principal>
-            <Dependent Role="Ilac">
-              <PropertyRef Name="ilacKatId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Sepet_Ilac">
-          <End Role="Ilac" Type="Self.Ilac" Multiplicity="1" />
-          <End Role="Sepet" Type="Self.Sepet" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Ilac">
-              <PropertyRef Name="ilacId" />
-            </Principal>
-            <Dependent Role="Sepet">
-              <PropertyRef Name="ilacId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <EntityContainer Name="IlacinGeslsinEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="Ilac" EntityType="Self.Ilac" />
-          <EntitySet Name="Kategori" EntityType="Self.Kategori" />
-          <EntitySet Name="Sepet" EntityType="Self.Sepet" />
-          <AssociationSet Name="FK_Ilac_Kategori" Association="Self.FK_Ilac_Kategori">
-            <End Role="Kategori" EntitySet="Kategori" />
-            <End Role="Ilac" EntitySet="Ilac" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Sepet_Ilac" Association="Self.FK_Sepet_Ilac">
-            <End Role="Ilac" EntitySet="Ilac" />
-            <End Role="Sepet" EntitySet="Sepet" />
-          </AssociationSet>
-          <EntitySet Name="Uye" EntityType="IlacinGeslsinModel.Uye" />
-          <AssociationSet Name="FK_Sepet_Uye" Association="IlacinGeslsinModel.FK_Sepet_Uye">
-            <End Role="Uye" EntitySet="Uye" />
-            <End Role="Sepet" EntitySet="Sepet" />
-          </AssociationSet>
-        </EntityContainer>
         <EntityType Name="Uye">
           <Key>
             <PropertyRef Name="uyeId" />
@@ -185,8 +275,82 @@
           <Property Name="uyeEposta" Type="String" MaxLength="75" FixedLength="false" Unicode="true" />
           <Property Name="uyeSifre" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="uyeAdmin" Type="Int32" />
+          <NavigationProperty Name="Begen" Relationship="IlacinGeslsinModel.FK_Begen_Uye" FromRole="Uye" ToRole="Begen" />
           <NavigationProperty Name="Sepet" Relationship="IlacinGeslsinModel.FK_Sepet_Uye" FromRole="Uye" ToRole="Sepet" />
+          <NavigationProperty Name="Yorum" Relationship="IlacinGeslsinModel.FK_Yorum_Uye" FromRole="Uye" ToRole="Yorum" />
         </EntityType>
+        <EntityType Name="Yorum">
+          <Key>
+            <PropertyRef Name="yorumId" />
+          </Key>
+          <Property Name="yorumId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="yorumIcerik" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="uyeId" Type="Int32" Nullable="false" />
+          <Property Name="ilacId" Type="Int32" Nullable="false" />
+          <Property Name="Tarih" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Ilac" Relationship="IlacinGeslsinModel.FK_Yorum_Ilac" FromRole="Yorum" ToRole="Ilac" />
+          <NavigationProperty Name="Uye" Relationship="IlacinGeslsinModel.FK_Yorum_Uye" FromRole="Yorum" ToRole="Uye" />
+        </EntityType>
+        <Association Name="FK_Begen_Ilac">
+          <End Type="IlacinGeslsinModel.Ilac" Role="Ilac" Multiplicity="1" />
+          <End Type="IlacinGeslsinModel.Begen" Role="Begen" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Ilac">
+              <PropertyRef Name="ilacId" />
+            </Principal>
+            <Dependent Role="Begen">
+              <PropertyRef Name="ilacId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Begen_Uye">
+          <End Type="IlacinGeslsinModel.Uye" Role="Uye" Multiplicity="1" />
+          <End Type="IlacinGeslsinModel.Begen" Role="Begen" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Uye">
+              <PropertyRef Name="uyeId" />
+            </Principal>
+            <Dependent Role="Begen">
+              <PropertyRef Name="uyeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Ilac_Kategori">
+          <End Type="IlacinGeslsinModel.Kategori" Role="Kategori" Multiplicity="1" />
+          <End Type="IlacinGeslsinModel.Ilac" Role="Ilac" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Kategori">
+              <PropertyRef Name="katId" />
+            </Principal>
+            <Dependent Role="Ilac">
+              <PropertyRef Name="ilacKatId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Sepet_Ilac">
+          <End Type="IlacinGeslsinModel.Ilac" Role="Ilac" Multiplicity="1" />
+          <End Type="IlacinGeslsinModel.Sepet" Role="Sepet" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Ilac">
+              <PropertyRef Name="ilacId" />
+            </Principal>
+            <Dependent Role="Sepet">
+              <PropertyRef Name="ilacId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Yorum_Ilac">
+          <End Type="IlacinGeslsinModel.Ilac" Role="Ilac" Multiplicity="1" />
+          <End Type="IlacinGeslsinModel.Yorum" Role="Yorum" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Ilac">
+              <PropertyRef Name="ilacId" />
+            </Principal>
+            <Dependent Role="Yorum">
+              <PropertyRef Name="ilacId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Sepet_Uye">
           <End Type="IlacinGeslsinModel.Uye" Role="Uye" Multiplicity="1" />
           <End Type="IlacinGeslsinModel.Sepet" Role="Sepet" Multiplicity="*" />
@@ -199,39 +363,60 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Yorum_Uye">
+          <End Type="IlacinGeslsinModel.Uye" Role="Uye" Multiplicity="1" />
+          <End Type="IlacinGeslsinModel.Yorum" Role="Yorum" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Uye">
+              <PropertyRef Name="uyeId" />
+            </Principal>
+            <Dependent Role="Yorum">
+              <PropertyRef Name="uyeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="IlacinGeslsinModelStoreContainer" CdmEntityContainer="IlacinGeslsinEntities">
+          <EntitySetMapping Name="Begen">
+            <EntityTypeMapping TypeName="IlacinGeslsinModel.Begen">
+              <MappingFragment StoreEntitySet="Begen">
+                <ScalarProperty Name="ilacId" ColumnName="ilacId" />
+                <ScalarProperty Name="uyeId" ColumnName="uyeId" />
+                <ScalarProperty Name="begenId" ColumnName="begenId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Ilac">
             <EntityTypeMapping TypeName="IlacinGeslsinModel.Ilac">
               <MappingFragment StoreEntitySet="Ilac">
-                <ScalarProperty Name="ilacId" ColumnName="ilacId" />
-                <ScalarProperty Name="ilacAdi" ColumnName="ilacAdi" />
-                <ScalarProperty Name="ilacAciklama" ColumnName="ilacAciklama" />
-                <ScalarProperty Name="ilacFiyat" ColumnName="ilacFiyat" />
-                <ScalarProperty Name="ilacFoto" ColumnName="ilacFoto" />
                 <ScalarProperty Name="ilacKatId" ColumnName="ilacKatId" />
+                <ScalarProperty Name="ilacFoto" ColumnName="ilacFoto" />
+                <ScalarProperty Name="ilacFiyat" ColumnName="ilacFiyat" />
+                <ScalarProperty Name="ilacAciklama" ColumnName="ilacAciklama" />
+                <ScalarProperty Name="ilacAdi" ColumnName="ilacAdi" />
+                <ScalarProperty Name="ilacId" ColumnName="ilacId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Kategori">
             <EntityTypeMapping TypeName="IlacinGeslsinModel.Kategori">
               <MappingFragment StoreEntitySet="Kategori">
-                <ScalarProperty Name="katId" ColumnName="katId" />
                 <ScalarProperty Name="katAdi" ColumnName="katAdi" />
+                <ScalarProperty Name="katId" ColumnName="katId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Sepet">
             <EntityTypeMapping TypeName="IlacinGeslsinModel.Sepet">
               <MappingFragment StoreEntitySet="Sepet">
-                <ScalarProperty Name="sepetId" ColumnName="sepetId" />
-                <ScalarProperty Name="uyeId" ColumnName="uyeId" />
-                <ScalarProperty Name="ilacId" ColumnName="ilacId" />
                 <ScalarProperty Name="sepetAdet" ColumnName="sepetAdet" />
+                <ScalarProperty Name="ilacId" ColumnName="ilacId" />
+                <ScalarProperty Name="uyeId" ColumnName="uyeId" />
+                <ScalarProperty Name="sepetId" ColumnName="sepetId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -244,6 +429,17 @@
                 <ScalarProperty Name="uyeKullaniciAdi" ColumnName="uyeKullaniciAdi" />
                 <ScalarProperty Name="uyeAdsoyad" ColumnName="uyeAdsoyad" />
                 <ScalarProperty Name="uyeId" ColumnName="uyeId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Yorum">
+            <EntityTypeMapping TypeName="IlacinGeslsinModel.Yorum">
+              <MappingFragment StoreEntitySet="Yorum">
+                <ScalarProperty Name="Tarih" ColumnName="Tarih" />
+                <ScalarProperty Name="ilacId" ColumnName="ilacId" />
+                <ScalarProperty Name="uyeId" ColumnName="uyeId" />
+                <ScalarProperty Name="yorumIcerik" ColumnName="yorumIcerik" />
+                <ScalarProperty Name="yorumId" ColumnName="yorumId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

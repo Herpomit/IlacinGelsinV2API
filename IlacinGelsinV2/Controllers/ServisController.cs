@@ -443,5 +443,174 @@ namespace IlacinGelsinV2.Controllers
             return sonuc;
         }
         #endregion
+
+        #region Yorum
+        [HttpGet]
+        [Route("api/yorumlistebyilacid/{ilacId}")]
+        public List<YorumModel> YorumListeByIlacId(int ilacId)
+        {
+            List<YorumModel> liste = db.Yorum.Where(d => d.ilacId == ilacId).Select(s => new YorumModel()
+            {
+                yorumId = s.yorumId,
+                ilacId = s.ilacId,
+                uyeId = s.uyeId,
+                Tarih = s.Tarih,
+                uyeKullaniciAdi = s.Uye.uyeKullaniciAdi,
+                yorumIcerik = s.yorumIcerik
+            }).ToList();
+            return liste;
+        }
+
+        [HttpGet]
+        [Route("api/yorumlistebyuyeid/{uyeId}")]
+        public List<YorumModel> YorumListeByUyeId(int uyeId)
+        {
+            List<YorumModel> liste = db.Yorum.Where(d => d.uyeId == uyeId).Select(s => new YorumModel()
+            {
+                yorumId = s.yorumId,
+                ilacId = s.ilacId,
+                uyeId = s.uyeId,
+                Tarih = s.Tarih,
+                uyeKullaniciAdi = s.Uye.uyeKullaniciAdi,
+                yorumIcerik = s.yorumIcerik
+            }).ToList();
+            return liste;
+        }
+        [HttpPost]
+        [Route("api/yorumekle")]
+        public SonucModel YorumEkle(YorumModel model)
+        {
+            if (db.Yorum.Count(d=> d.ilacId == model.ilacId && d.yorumIcerik == model.yorumIcerik) > 0)
+            {
+                sonuc.islem = false;
+                sonuc.mesaj = "Aynı Yorumu Aynı Ürüne sadece bir kez yapabilirsiniz!";
+                return sonuc;
+            }
+            Yorum kayit = new Yorum();
+            kayit.ilacId = model.ilacId;
+            kayit.uyeId = model.uyeId;
+            kayit.Tarih = model.Tarih;
+            kayit.yorumIcerik = model.yorumIcerik;
+            db.Yorum.Add(kayit);
+            db.SaveChanges();
+
+            sonuc.islem = true;
+            sonuc.mesaj = "Yorum Eklendi!";
+            return sonuc;
+        }
+        [HttpPut]
+        [Route("api/yorumduzenle")]
+        public SonucModel YorumDuzenle(YorumModel model)
+        {
+            Yorum kayit = db.Yorum.Where(d => d.yorumId == model.yorumId).SingleOrDefault();
+            if (kayit == null)
+            {
+                sonuc.islem = false;
+                sonuc.mesaj = "Yorum Bulunamadı!";
+                return sonuc;
+            }
+            kayit.yorumId = model.yorumId;
+            kayit.yorumIcerik = model.yorumIcerik;
+            kayit.Tarih = model.Tarih;
+            kayit.ilacId = model.ilacId;
+            kayit.uyeId = model.uyeId;
+            db.SaveChanges();
+
+            sonuc.islem = true;
+            sonuc.mesaj = "Yorum Düzenlendi!";
+            return sonuc;
+        }
+        [HttpDelete]
+        [Route("api/yorumsil/{yorumId}")]
+        public SonucModel YorumSil(int yorumId)
+        {
+            Yorum kayit = db.Yorum.Where(d => d.yorumId == yorumId).SingleOrDefault();
+            if (kayit == null)
+            {
+                sonuc.islem = false;
+                sonuc.mesaj = "Yorum Bulunamadı!";
+                return sonuc;
+            }
+            db.Yorum.Remove(kayit);
+            db.SaveChanges();
+
+            sonuc.islem = true;
+            sonuc.mesaj = "Yorum Silindi!";
+            return sonuc;
+        }
+        #endregion
+
+        #region Begen
+        [HttpGet]
+        [Route("api/begenlistebyuyeid/{uyeId}")]
+        public List<BegenModel> BegenListeByUyeId(int uyeId)
+        {
+            List<BegenModel> liste = db.Begen.Where(d => d.uyeId == uyeId).Select(s => new BegenModel()
+            {
+                begenId = s.begenId,
+                uyeId = s.uyeId,
+                ilacId = s.ilacId
+            }).ToList();
+            foreach (var kayit in liste)
+            {
+                kayit.ilacBilgi = IlacById(kayit.ilacId);
+            }
+            return liste;
+        }
+        [HttpPost]
+        [Route("api/begenekle")]
+        public SonucModel BegenEkle(BegenModel model)
+        {
+            if (db.Begen.Count(d => d.uyeId == model.uyeId && d.ilacId == model.ilacId) > 0)
+            {
+                sonuc.islem = false;
+                sonuc.mesaj = "İlacı Zaten Beğendiniz!";
+                return sonuc;
+            }
+            Begen kayit = new Begen();
+            kayit.ilacId = model.ilacId;
+            kayit.uyeId = model.uyeId;
+            db.Begen.Add(kayit);
+            db.SaveChanges();
+
+            sonuc.islem = true;
+            sonuc.mesaj = "Beğendiniz!";
+            return sonuc;
+        }
+        [HttpDelete]
+        [Route("api/begentemizle/{ilacId}")]
+        public SonucModel BegenTemizle(int ilacId)
+        {
+            List<Begen> liste = db.Begen.Where(d => d.ilacId == ilacId).ToList();
+
+            foreach (var item in liste)
+            {
+                db.Begen.Remove(item);
+            }
+            db.SaveChanges();
+
+            sonuc.islem = true;
+            sonuc.mesaj = "Beğeniler temizlendi!";
+            return sonuc;
+        }
+        [HttpDelete]
+        [Route("api/begensil/{begenId}")]
+        public SonucModel BegenSil(int begenId)
+        {
+            Begen kayit = db.Begen.Where(d => d.begenId == begenId).SingleOrDefault();
+            if (kayit == null)
+            {
+                sonuc.islem = false;
+                sonuc.mesaj = "İlaç Beğendiklerinizde Bulunamadı!";
+                return sonuc;
+            }
+            db.Begen.Remove(kayit);
+            db.SaveChanges();
+
+            sonuc.islem = true;
+            sonuc.mesaj = "İlaç Beğendiklerinizden Silindi!";
+            return sonuc;
+        }
+        #endregion
     }
 }

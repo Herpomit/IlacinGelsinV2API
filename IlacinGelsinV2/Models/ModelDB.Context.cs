@@ -25,9 +25,11 @@ namespace IlacinGelsinV2.Models
             throw new UnintentionalCodeFirstException();
         }
     
+        public virtual DbSet<Begen> Begen { get; set; }
         public virtual DbSet<Ilac> Ilac { get; set; }
         public virtual DbSet<Kategori> Kategori { get; set; }
         public virtual DbSet<Sepet> Sepet { get; set; }
         public virtual DbSet<Uye> Uye { get; set; }
+        public virtual DbSet<Yorum> Yorum { get; set; }
     }
 }

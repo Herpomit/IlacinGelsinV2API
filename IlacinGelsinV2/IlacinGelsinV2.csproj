@@ -144,6 +144,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\Begen.cs">
+      <DependentUpon>ModelDB.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Ilac.cs">
       <DependentUpon>ModelDB.tt</DependentUpon>
     </Compile>
@@ -171,12 +174,17 @@
     <Compile Include="Models\Uye.cs">
       <DependentUpon>ModelDB.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Yorum.cs">
+      <DependentUpon>ModelDB.tt</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModel\BegenModel.cs" />
     <Compile Include="ViewModel\IlacModel.cs" />
     <Compile Include="ViewModel\KategoriModel.cs" />
     <Compile Include="ViewModel\SepetModel.cs" />
     <Compile Include="ViewModel\SonucModel.cs" />
     <Compile Include="ViewModel\UyeModel.cs" />
+    <Compile Include="ViewModel\YorumModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <EntityDeploy Include="Models\ModelDB.edmx">

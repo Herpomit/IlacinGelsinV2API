@@ -17,7 +17,9 @@ namespace IlacinGelsinV2.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Uye()
         {
+            this.Begen = new HashSet<Begen>();
             this.Sepet = new HashSet<Sepet>();
+            this.Yorum = new HashSet<Yorum>();
         }
     
         public int uyeId { get; set; }
@@ -28,6 +30,10 @@ namespace IlacinGelsinV2.Models
         public Nullable<int> uyeAdmin { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Begen> Begen { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Sepet> Sepet { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Yorum> Yorum { get; set; }
     }
 }
