@@ -5,12 +5,12 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="40c029fef666428c95891c72529d9aba" Name="Diagram1">
-        <EntityTypeShape EntityType="IlacinGeslsinModel.Begen" Width="1.5" PointX="6.25" PointY="7" />
-        <EntityTypeShape EntityType="IlacinGeslsinModel.Ilac" Width="1.5" PointX="2.875" PointY="0.75" />
+        <EntityTypeShape EntityType="IlacinGeslsinModel.Begen" Width="1.5" PointX="5.25" PointY="5.25" />
+        <EntityTypeShape EntityType="IlacinGeslsinModel.Ilac" Width="1.5" PointX="3" PointY="4.75" />
         <EntityTypeShape EntityType="IlacinGeslsinModel.Kategori" Width="1.5" PointX="0.75" PointY="5.375" />
-        <EntityTypeShape EntityType="IlacinGeslsinModel.Sepet" Width="1.5" PointX="6.375" PointY="3.5" />
-        <EntityTypeShape EntityType="IlacinGeslsinModel.Uye" Width="1.5" PointX="9.375" PointY="0.75" />
-        <EntityTypeShape EntityType="IlacinGeslsinModel.Yorum" Width="1.5" PointX="6.375" PointY="0.5" />
+        <EntityTypeShape EntityType="IlacinGeslsinModel.Sepet" Width="1.5" PointX="5.25" PointY="8.125" />
+        <EntityTypeShape EntityType="IlacinGeslsinModel.Uye" Width="1.5" PointX="3" PointY="0.75" />
+        <EntityTypeShape EntityType="IlacinGeslsinModel.Yorum" Width="1.5" PointX="5.25" PointY="2" />
         <AssociationConnector Association="IlacinGeslsinModel.FK_Begen_Ilac" />
         <AssociationConnector Association="IlacinGeslsinModel.FK_Begen_Uye" />
         <AssociationConnector Association="IlacinGeslsinModel.FK_Ilac_Kategori" />

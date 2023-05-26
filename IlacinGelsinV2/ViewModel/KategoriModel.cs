@@ -9,5 +9,6 @@ namespace IlacinGelsinV2.ViewModel
     {
         public int katId { get; set; }
         public string katAdi { get; set; }
+        public int urunSayisi { get; set; }
     }
 }

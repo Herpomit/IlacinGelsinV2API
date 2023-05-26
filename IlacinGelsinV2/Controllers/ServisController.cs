@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -22,7 +24,8 @@ namespace IlacinGelsinV2.Controllers
             List<KategoriModel> liste = db.Kategori.Select(s => new KategoriModel()
             {
                 katId = s.katId,
-                katAdi = s.katAdi
+                katAdi = s.katAdi,
+                urunSayisi = s.Ilac.Count
             }).ToList();
 
             return liste;
@@ -35,7 +38,8 @@ namespace IlacinGelsinV2.Controllers
             KategoriModel kayit = db.Kategori.Where(d => d.katId == katId).Select(s => new KategoriModel()
             {
                 katId = s.katId,
-                katAdi = s.katAdi
+                katAdi = s.katAdi,
+                urunSayisi = s.Ilac.Count
             }).SingleOrDefault();
             return kayit;
         }
@@ -108,7 +112,7 @@ namespace IlacinGelsinV2.Controllers
                 ilacFoto = s.ilacFoto,
                 ilacKatId = s.ilacKatId,
                 ilacAciklama = s.ilacAciklama,
-                ilacFiyat = s.ilacFiyat
+                ilacFiyat = s.ilacFiyat,
             }).ToList();
 
             return liste;
@@ -241,7 +245,8 @@ namespace IlacinGelsinV2.Controllers
                 uyeEposta = s.uyeEposta,
                 uyeAdsoyad = s.uyeAdsoyad,
                 uyeSifre = s.uyeSifre,
-                uyeAdmin = s.uyeAdmin
+                uyeAdmin = s.uyeAdmin,
+                uyeFoto = s.uyeFoto
             }).ToList();
 
             return liste;
@@ -257,7 +262,8 @@ namespace IlacinGelsinV2.Controllers
                 uyeEposta = s.uyeEposta,
                 uyeAdsoyad = s.uyeAdsoyad,
                 uyeSifre = s.uyeSifre,
-                uyeAdmin = s.uyeAdmin
+                uyeAdmin = s.uyeAdmin,
+                uyeFoto = s.uyeFoto
             }).SingleOrDefault();
 
             return kayit;
@@ -303,6 +309,7 @@ namespace IlacinGelsinV2.Controllers
             kayit.uyeAdsoyad = model.uyeAdsoyad;
             kayit.uyeSifre = model.uyeSifre;
             kayit.uyeAdmin = model.uyeAdmin;
+            kayit.uyeFoto = model.uyeFoto;
             db.Uye.Add(kayit);
             db.SaveChanges();
 
@@ -326,6 +333,7 @@ namespace IlacinGelsinV2.Controllers
             kayit.uyeAdsoyad = model.uyeAdsoyad;
             kayit.uyeSifre = model.uyeSifre;
             kayit.uyeAdmin = model.uyeAdmin;
+            kayit.uyeFoto = model.uyeFoto;
             db.SaveChanges();
 
             sonuc.islem = true;
@@ -350,6 +358,45 @@ namespace IlacinGelsinV2.Controllers
             sonuc.mesaj = "Üye Silindi!";
             return sonuc;
         }
+
+        [HttpPost]
+        [Route("api/uyefotoguncelle")]
+        public SonucModel UyeFotoGuncelle(uyeFotoModel model)
+        {
+            Uye kayit = db.Uye.Where(d => d.uyeId == model.uyeId).SingleOrDefault();
+            if (kayit == null)
+            {
+                sonuc.islem = false;
+                sonuc.mesaj = "Üye Bulunamadı!";
+                return sonuc;
+            }
+            if (kayit.uyeFoto != "profil.jpg")
+            {
+                string yol = System.Web.Hosting.HostingEnvironment.MapPath("~/Dosyalar/"+kayit.uyeFoto);
+                if (File.Exists(yol))
+                {
+                    File.Delete(yol);
+                }
+            }
+
+            string data = model.fotoData;
+            string base64 = data.Substring(data.IndexOf(',') + 1);
+            base64 = base64.Trim('\0');
+            byte[] imgbytes = Convert.FromBase64String(base64);
+            string dosyaAdi = kayit.uyeId + model.fotoUzanti.Replace("image/", ".");
+            using (var ms= new MemoryStream(imgbytes,0,imgbytes.Length))
+            {
+                Image img = Image.FromStream(ms,true);
+                img.Save(System.Web.Hosting.HostingEnvironment.MapPath("~/Dosyalar/" + dosyaAdi));
+            }
+            kayit.uyeFoto = dosyaAdi;
+            db.SaveChanges();
+
+            sonuc.islem = true;
+            sonuc.mesaj = "Fotoğraf Güncellendi";
+            return sonuc;
+        }
+
         #endregion
 
         #region Sepet
@@ -371,6 +418,15 @@ namespace IlacinGelsinV2.Controllers
 
             return liste;
         }
+
+        [HttpGet]
+        [Route("api/sepeturunsayisi/{uyeId}")]
+        public int SepetUrunSayisi(int uyeId)
+        {
+            int toplam = db.Sepet.Count(d => d.uyeId == uyeId);
+            return toplam;
+        }
+
         [HttpPost]
         [Route("api/sepetekle")]
         public SonucModel SepetEkle(SepetModel model)

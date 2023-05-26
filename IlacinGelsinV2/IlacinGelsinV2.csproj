@@ -183,6 +183,7 @@
     <Compile Include="ViewModel\KategoriModel.cs" />
     <Compile Include="ViewModel\SepetModel.cs" />
     <Compile Include="ViewModel\SonucModel.cs" />
+    <Compile Include="ViewModel\uyeFotoModel.cs" />
     <Compile Include="ViewModel\UyeModel.cs" />
     <Compile Include="ViewModel\YorumModel.cs" />
   </ItemGroup>
@@ -204,6 +205,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Dosyalar\" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

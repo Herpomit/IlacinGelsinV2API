@@ -28,6 +28,7 @@ namespace IlacinGelsinV2.Models
         public string uyeEposta { get; set; }
         public string uyeSifre { get; set; }
         public Nullable<int> uyeAdmin { get; set; }
+        public string uyeFoto { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Begen> Begen { get; set; }

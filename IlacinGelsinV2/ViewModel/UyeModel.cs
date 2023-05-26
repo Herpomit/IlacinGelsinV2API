@@ -13,5 +13,6 @@ namespace IlacinGelsinV2.ViewModel
         public string uyeEposta { get; set; }
         public string uyeSifre { get; set; }
         public Nullable<int> uyeAdmin { get; set; }
+        public string uyeFoto { get; set; }
     }
 }

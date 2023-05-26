@@ -50,6 +50,7 @@
           <Property Name="uyeEposta" Type="nvarchar" MaxLength="75" />
           <Property Name="uyeSifre" Type="nvarchar" MaxLength="50" />
           <Property Name="uyeAdmin" Type="int" />
+          <Property Name="uyeFoto" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="Yorum">
           <Key>
@@ -275,6 +276,7 @@
           <Property Name="uyeEposta" Type="String" MaxLength="75" FixedLength="false" Unicode="true" />
           <Property Name="uyeSifre" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="uyeAdmin" Type="Int32" />
+          <Property Name="uyeFoto" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Begen" Relationship="IlacinGeslsinModel.FK_Begen_Uye" FromRole="Uye" ToRole="Begen" />
           <NavigationProperty Name="Sepet" Relationship="IlacinGeslsinModel.FK_Sepet_Uye" FromRole="Uye" ToRole="Sepet" />
           <NavigationProperty Name="Yorum" Relationship="IlacinGeslsinModel.FK_Yorum_Uye" FromRole="Uye" ToRole="Yorum" />
@@ -375,7 +377,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-      </Schema>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
@@ -423,6 +425,7 @@
           <EntitySetMapping Name="Uye">
             <EntityTypeMapping TypeName="IlacinGeslsinModel.Uye">
               <MappingFragment StoreEntitySet="Uye">
+                <ScalarProperty Name="uyeFoto" ColumnName="uyeFoto" />
                 <ScalarProperty Name="uyeAdmin" ColumnName="uyeAdmin" />
                 <ScalarProperty Name="uyeSifre" ColumnName="uyeSifre" />
                 <ScalarProperty Name="uyeEposta" ColumnName="uyeEposta" />
