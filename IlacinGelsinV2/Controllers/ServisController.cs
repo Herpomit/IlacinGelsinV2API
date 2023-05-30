@@ -378,7 +378,6 @@ namespace IlacinGelsinV2.Controllers
                     File.Delete(yol);
                 }
             }
-
             string data = model.fotoData;
             string base64 = data.Substring(data.IndexOf(',') + 1);
             base64 = base64.Trim('\0');
@@ -391,7 +390,6 @@ namespace IlacinGelsinV2.Controllers
             }
             kayit.uyeFoto = dosyaAdi;
             db.SaveChanges();
-
             sonuc.islem = true;
             sonuc.mesaj = "Fotoğraf Güncellendi";
             return sonuc;
@@ -613,20 +611,6 @@ namespace IlacinGelsinV2.Controllers
             }
             return liste;
         }
-        [HttpPost]
-        [Route("api/begenkontrol")]
-        public bool BegenKontrol(BegenModel model)
-        {
-            if (db.Begen.Count(d => d.uyeId == model.uyeId && d.ilacId == model.ilacId) > 0)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
         [HttpPost]
         [Route("api/begenekle")]
         public SonucModel BegenEkle(BegenModel model)
