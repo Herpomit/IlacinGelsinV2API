@@ -614,6 +614,20 @@ namespace IlacinGelsinV2.Controllers
             return liste;
         }
         [HttpPost]
+        [Route("api/begenkontrol")]
+        public bool BegenKontrol(BegenModel model)
+        {
+            if (db.Begen.Count(d => d.uyeId == model.uyeId && d.ilacId == model.ilacId) > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        [HttpPost]
         [Route("api/begenekle")]
         public SonucModel BegenEkle(BegenModel model)
         {
